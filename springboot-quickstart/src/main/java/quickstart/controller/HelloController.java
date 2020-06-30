@@ -17,3 +17,15 @@ public class HelloController {
         return id+" hello "+user.toString();
     }
 }
+/*
+测试：
+http://localhost:8080/hello/user/3 POST
+{
+  "id":1,
+	"username":"jack",
+  "password":"123456"
+}
+
+返回
+3 hello User{id=1, username='jack', password='123456'}
+ */
