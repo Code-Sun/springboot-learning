@@ -11,3 +11,7 @@ git rm -r --cached .idea  删除.idea文件夹
 git commit -m "删除.idea文件夹"
 git push
 ```
+## 别人的项目git地址
+```
+https://github.com/JeffLi1993/springboot-learning-example
+```
