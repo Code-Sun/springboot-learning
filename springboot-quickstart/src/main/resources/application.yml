@@ -1,1 +1,372 @@
+buildTime: '@timestamp@'
+termsOfServiceUrl: http://localhost:${server.port}
+version: '@project.version@'
+
+flowable:
+  async-executor-activate: true
+  check-process-definitions: false
+  custom-mybatis-mappers: ''
+  database-schema-update: true
+  db-history-used: true
+  db-identity-used: true
+  jpa-enabled: true
+  process-definition-location-prefix: classpath:processes/
+  rest-api-enabled: true
+h2:
+  console:
+    enabled: true
+    settings:
+      trace: false
+      web-allow-others: true
+idm:
+  security:
+    browser:
+      loginPage: /home.html
+info:
+  name: ${spring.application.name}
+jdbc:
+  mysql:
+    #jdbcUrl: jdbc:mysql://192.168.205.122:3306/apigateway-ai?useCompression=true&useServerPrepStmts=false&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    #jdbcUrl: jdbc:mysql://10.35.80.234:3306/apigateway?useCompression=true&useServerPrepStmts=false&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    #jdbcUrl: jdbc:mysql://172.16.104.39:3306/apigateway?useCompression=true&useServerPrepStmts=false&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    jdbcUrl: jdbc:mysql://192.168.1.102:3306/apigateway-ai?useCompression=true&useServerPrepStmts=false&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    #jdbcUrl: jdbc:mysql://10.35.2.80:3306/apigateway?useCompression=true&useServerPrepStmts=false&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    #jdbcUrl: jdbc:mysql://10.35.2.80:3306/apigateway?useCompression=true&useServerPrepStmts=false&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+
+    password: 123456
+    username: appuser
+    #    jdbcUrl: jdbc:mysql://192.168.1.185:3306/smartfactory-alarm?useCompression=true&useServerPrepStmts=false&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    #    password: root
+    #    username: pingtai-root
+
+#logging:
+#  config: classpath:logback.xml
+#logging:
+#  file: logs/apigateway-ai.log
+#  level:
+#    root: DEBUG
+#  pattern:
+#    console: '%d %5p [%t] %c:%L  - %m%n'
+#    file: '%d %5p [%t] %c:%L  - %m%n'
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    shutdown:
+      sensitive: false
+    web:
+      exposure:
+        include: '*'
+  health:
+    diskspace:
+      enabled: false
+    elasticsearch: # es不进行健康检查，因为没有安装到京隆
+      enabled: false
+server:
+  port: 9600
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1500
+    max-connections: 20000
+#    basedir: /data/cnbmtech-pro/tomcatbasedir
+spring:
+  http:
+    encoding:
+#      charset: UTF-8
+#      enabled: true
+#      force: true
+  aop:
+    proxy-target-class: true
+  application:
+    name: apigateway-ai
+  autoconfigure:
+#    exclude: ''
+  cache:
+    ehcache:
+      config: classpath:config/ehcache.xml
+    type: ehcache
+  data:
+    rest:
+      basePath: /api/jpa/v1
+    mongodb:
+      uri:  mongodb://192.168.1.102:27017/jzhTest
+      option:
+        socket-keep-alive: true
+        max-connection-idle-time: 60000
+    #        connect-timeout: 36000
+    #        min-connection-per-host: 5
+    #        threads-allowed-to-block-for-connection-multiplier: 5
+    #        max-wait-time: 120000
+    #        socket-timeout: 0
+    #        max-connection-life-time: 0
+    #        heartbeat-socket-timeout: 36000
+    #        heartbeat-connect-timeout: 36000
+    #        min-heartbeat-frequency: 5
+    #        heartbeat-frequency: 10
+  datasource:
+    druid:
+      filters: stat
+      initial-size: 1
+      max-active: 50
+      max-pool-prepared-statement-per-connection-size: 20
+      max-wait: 60000
+      min-evictable-idle-time-millis: 300000
+      min-idle: 1
+      password: ${jdbc.mysql.password}
+      pool-prepared-statements: true
+      stat-view-servlet:
+        allow: ''
+        deny: ''
+        enabled: true
+        login-password: ${spring.security.user.password}
+        login-username: ${spring.security.user.name}
+        reset-enable: true
+        url-pattern: /druid/*
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      url: ${jdbc.mysql.jdbcUrl}
+      username: ${jdbc.mysql.username}
+      validation-query: SELECT 'x'
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      INDENT_OUTPUT: true
+    time-zone: GMT+8
+
+  rabbitmq: #配置rabbitMq 服务器
+    host: 123.124.254.170
+    port: 9008
+    username: appuser
+    password: cnbm123456
+  redis:
+    host: 192.168.1.102
+    #host: 192.168.205.185
+    #password: 123456
+    password: redis123
+    port: 6379
+    #连接超时时间
+    timeout: 5000s
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    ## jpa 批量插入 参考https://www.cnblogs.com/blog5277/p/10661096.html
+    ## https://stackoverflow.com/questions/33323837/database-application-yml-for-spring-boot-from-applications-properties
+    properties:
+      hibernate.jdbc.batch_size: 3
+      hibernate.jdbc.batch_versioned_data: true
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+  security:
+    user:
+      name: root
+      password: 123456
+  servlet:
+    multipart:
+      max-file-size: 256MB
+      max-request-size: 256MB
+  #  elasticsearch:
+  #    rest:
+  #      uris: https://172.17.5.131:9200
+  #      username: user
+  #      password: secret
+
+  quartz:
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: yiLianTongScheduler
+            instanceId: AUTO
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: QRTZ_
+            isClustered: true
+            clusterCheckinInterval: 10000
+            useProperties: false
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+    #数据库方式
+    job-store-type: jdbc
+    #初始化表结构
+    jdbc:parsedReceiveData:
+      initialize-schema: always
+
+  kafka:
+    # 以逗号分隔的地址列表，用于建立与Kafka集群的初始连接(kafka 默认的端口号为9092) #192.168.1.102:9092
+    bootstrap-servers: 192.168.1.102:9092
+    producer:
+      # 发生错误后，消息重发的次数。
+      retries: 0
+      #当有多个消息需要被发送到同一个分区时，生产者会把它们放在同一个批次里。该参数指定了一个批次可以使用的内存大小，按照字节数计算。
+      batch-size: 16384
+      # 设置生产者内存缓冲区的大小。
+      buffer-memory: 33554432
+      # 键的序列化方式
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 值的序列化方式
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # acks=0 ： 生产者在成功写入消息之前不会等待任何来自服务器的响应。
+      # acks=1 ： 只要集群的首领节点收到消息，生产者就会收到一个来自服务器成功响应。
+      # acks=all ：只有当所有参与复制的节点全部收到消息时，生产者才会收到一个来自服务器的成功响应。
+      acks: 1
+    consumer:
+      # 自动提交的时间间隔 在spring boot 2.X 版本中这里采用的是值的类型为Duration 需要符合特定的格式，如1S,1M,2H,5D
+      auto-commit-interval: 1S
+      # 该属性指定了消费者在读取一个没有偏移量的分区或者偏移量无效的情况下该作何处理：
+      # latest（默认值）在偏移量无效的情况下，消费者将从最新的记录开始读取数据（在消费者启动之后生成的记录）
+      # earliest ：在偏移量无效的情况下，消费者将从起始位置读取分区的记录
+      auto-offset-reset: earliest
+      # 是否自动提交偏移量，默认值是true,为了避免出现重复数据和数据丢失，可以把它设置为false,然后手动提交偏移量
+      enable-auto-commit: false
+      # 键的反序列化方式
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # 值的反序列化方式
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      # 在侦听器容器中运行的线程数。
+      concurrency: 5
+      #listner负责ack，每调用一次，就立即commit
+      ack-mode: MANUAL_IMMEDIATE
+
+
+fdfs:
+  so-timeout: 1501
+  connect-timeout: 601
+  thumb-image:             #缩略图生成参数
+    width: 150
+    height: 150
+  tracker-list:            #TrackerList参数,支持多个
+  - 192.168.205.60:22122
+  #- 172.16.104.39:22122 #平煤
+  #- 10.35.80.234:22122 #京隆
+  #- 10.35.2.80:22122 #京隆
+  # web-server-url ： 图床中图片显示的url前缀。可以使nginx配置
+  web-server-url: http://192.168.205.60:8888/  # 图床父路径：http://192.168.112.134:8888/group1/M00/00/00/wKhwhl1ChXOAAmHbAARPLNtYnak227.jpg
+  #web-server-url: http://10.35.80.234:8888/
+  #web-server-url: http://172.16.104.39:8888/
+
+# 文件归档的参数
+# 图片的保存模式：fastdfs,url-disk,disk-file
+#  图床 fastdfs  http://172.17.5.131:8888/group1/M00/06/C4/rBEFg13NDC2AVvNJAAgSQhfOSp0568.jp
+#  应用程序本地nginx代理的磁盘全路径 url-disk  http://192.168.205.122:9400/2019-11-21/647026566823411712.jpg
+#  disk-file磁盘相对路径 /2019-11-21/647026566823411712.jpg
+file-archive:
+  image:
+    modes: fastdfs,url-disk,disk-file  # 归档模式
+    active-mode: url-disk              # 启用模式
+    #      active-mode: fastdfs              # 启用模式
+    server:   # 归档服务器配置
+      relative-path-prefix: /images  # 归档服务器配置
+      absolute-path-prefix: /var/aiplatform/apigateway-ai/images
+      #url-prefix: http://192.168.205.122:9400/
+      #url-prefix: http://10.35.80.234:9400/
+      #url-prefix: http://172.16.104.39:9400/
+      url-prefix: http://192.168.1.102:9400/
+      #url-prefix: http://10.35.2.80:9400/
+
+# 不保存原始数据
+original-data:
+  save-enable: false
+file:
+  # 文件上传目录
+  #uploadFolder: /usr/local/upload
+  uploadFolder: http://192.168.205.122:9500/
+
+files:
+  uploadFolders:  http://192.168.205.122:9500/
+
+
+#security:
+#  oauth2:
+#    client:
+#      client-id: apigateway-ai
+#      client-secret: order123
+#      access-token-uri: http://localhost:8000/oauth/token
+#      user-authorization-uri: http://localhost:8000/oauth/authorize
+#    resource:
+#      jwt:
+#        key-uri: http://localhost:8000/oauth/token_key
+#        key-value: cjs
+
+#jwt
+jwt:
+  enable: false
+  header: Authorization
+  secret: cnbmtech123
+  # token 过期时间/毫秒，6小时  1小时 = 3600000 毫秒
+  expiration: 21600000
+  # 在线用户key
+  online: online-token
+  # 验证码
+  codeKey: code-key
+  ignored-token-path: /error,/doc,/ai
+
+
+opc:
+  host: 127.0.0.1
+  domain:
+  username: shunnimo
+  password: lssnm
+  clsid: 7BC0CC8E-482C-47CA-ABDC-0FE7F9C6E729
+  progid:
+
+opcalarm:
+  configs:
+    time-out: 15000
+
+# 机器人京隆环境：下位机 10.35.80.101:8001   上位机 （我） 10.35.80.234:8005
+robot:
+  lower-sock-addr: 10.35.80.101:8001
+  upper-recv-port: 8005
+
+yiliantong:
+  login-url: http://{ip}:{port}/api/auth/token
+  #  sockaddr: 192.168.205.225:20080
+  sockaddr: 192.168.205.202:20080
+  username: root
+  password: admin123
+# 智能工厂接收一脸通数据的地址 post
+smart-factory-for-yiliantong-url: http://192.168.1.185:9008/smartfactory/yiliantong/yiLianTongRecord/100010
+#smart-factory-for-yiliantong-url: http://123.124.254.170:9008/smartfactory/yiliantong/yiLianTongRecord/0000000000000000
+face-detect-url: http://192.168.205.202:9111/ai/feature/detectFaceV2
+igates:
+  ipPort: 192.168.205.97:80
+  vendor: zkzy
+  algType: igatesRecognitionFace
+  tunnel: 192.168.205.97_igates
+  winPath: D:\\
+  linuxPath: /home/admin
+  #  pad id唯一标示此pad
+  padid: 30
+
+# 告警数据是否推送到kafka;不使用kafka时使用post推送的url地址
+alarm:
+  push-to-kafka: true
+  post-url: http://192.168.205.202:9111/ai/alarmdata
+
+simplejob:
+  frequency: 1000
+
+
+
+## 以图搜图和人脸识别微服务地址
+faceSdkBaseUrl: http://192.168.205.202:9602/
+## enable人脸特征衍生的人脸识别和以图搜图是否启用；recognizedFaceRecord.enableSaveFeatureColumn是否保存特征列
+faceFeature:
+  zkzyFaceSdk:
+    enable: true
+    recognizedFaceRecord:
+      enableSaveFeatureColumn: true
+
+
 
